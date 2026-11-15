@@ -111,18 +111,31 @@ export default function App() {
               className={`bleach-btn ${state.bleachMode ? 'active' : ''}`}
               disabled={state.bleach === 0}
               onClick={() => dispatch({ type: 'toggleBleach' })}
+              title="락스 사용: 판의 칸 1개 지우기"
             >
-              🧴 락스 {state.bleach}
+              <span className="bleach-icon">🧴</span>
+              <b key={state.bleach} className="bleach-count">{state.bleach}</b>
             </button>
-            <div className="progress" title={`세탁 ${bleachCost}번마다 락스 1개`}>
-              {Array.from({ length: bleachCost }, (_, i) => (
-                <span key={i} className={i < state.washProgress ? 'on' : ''} />
-              ))}
+            <div className="bottle" title={`세탁 ${bleachCost}번마다 락스 1개`}>
+              <div className="bottle-body">
+                <div
+                  className="liquid"
+                  style={{ height: `${(state.washProgress / bleachCost) * 100}%` }}
+                />
+              </div>
+              <span className="bottle-label">
+                {state.washProgress}/{bleachCost}
+              </span>
             </div>
           </section>
         </aside>
 
         <div className={`board ${state.bleachMode ? 'bleaching' : ''}`}>
+          {state.bingoCount > 0 && (
+            <div key={state.bingoCount} className="bingo">
+              BINGO!{state.lastBingo > 1 && <small>×{state.lastBingo}</small>}
+            </div>
+          )}
           {state.board.map((cell, i) => (
             <button
               key={i}

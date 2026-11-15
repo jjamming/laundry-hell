@@ -20,6 +20,8 @@ export type GameState = {
   bleach: number
   washProgress: number
   score: number
+  bingoCount: number // 빙고 연출 트리거용 누적 횟수
+  lastBingo: number
   selected: number | null
   bleachMode: boolean
   over: boolean
@@ -79,7 +81,14 @@ function settle(s: GameState): GameState {
   const zone = [...s.zone]
   for (const line of lines) zone.push(s.board[line[0]]!)
   for (const line of lines) for (const i of line) board[i] = null
-  return { ...s, board, zone, score: s.score + SCORE_PER_BINGO * lines.length }
+  return {
+    ...s,
+    board,
+    zone,
+    score: s.score + SCORE_PER_BINGO * lines.length,
+    bingoCount: s.bingoCount + 1,
+    lastBingo: lines.length,
+  }
 }
 
 // 존이 꽉 차서 옮기지 못하고 판에 남은 빙고 줄
@@ -104,6 +113,8 @@ export function initGame(seed: number): GameState {
     bleach: 0,
     washProgress: 0,
     score: 0,
+    bingoCount: 0,
+    lastBingo: 0,
     selected: null,
     bleachMode: false,
     over: false,
