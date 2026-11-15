@@ -2,7 +2,6 @@ import { useEffect, useReducer, useRef, useState, type DragEvent } from 'react'
 import {
   ZONE_MAX,
   itemById,
-  typeCountFor,
   washesPerBleach,
   type ItemId,
 } from './game/config'
@@ -56,10 +55,7 @@ export default function App() {
     <main className="game">
       <header className="hud">
         <h1>세탁지옥</h1>
-        <div className="score">
-          {state.score.toLocaleString()}점
-          <small key={typeCountFor(state.score)}>빨래 {typeCountFor(state.score)}종</small>
-        </div>
+        <div className="score">{state.score.toLocaleString()}점</div>
       </header>
 
       <div className="play">
@@ -167,12 +163,6 @@ export default function App() {
           </button>
         ))}
       </footer>
-
-      <p className="hint">
-        {state.bleachMode
-          ? '지울 칸을 누르세요'
-          : '빨래를 골라 칸에 놓으세요 · 같은 빨래 5개를 한 줄로!'}
-      </p>
 
       {state.over && (
         <div className="overlay">
